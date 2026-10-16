@@ -20,7 +20,7 @@
   st.tasks.t1abcdefgh12 = { title: "Промпт для письма клиенту", text: "Напиши промпт, по которому Claude готовит письмо клиенту о переносе срока. Сдай сам промпт и один пример ответа.", criteria: "Есть роль и контекст\nЗадан формат ответа\nЕсть пример или ограничения", due: now + 3 * D, ch: "s-homework", by: "Анна", at: now - 2 * D };
   st.msgs[day.replace(/-/g, "") + "-seed"] = { day: day, writer: "seed", items: [
     { id: "aaaaaaaaaan1", at: now - 2 * D - H, kind: "text", nick: "Анна", text: "Добро пожаловать на поток! Первое задание уже в #домашки.", ch: "s-ann" },
-    { id: "aaaaaaaaams1", at: now - 5 * H, kind: "text", nick: "Маша", text: "Ты — менеджер проекта. Напиши клиенту письмо о переносе срока на неделю: вежливо, 5–7 предложений, с новым планом.", ch: "s-homework", reply: "t1abcdefgh12", sub: 1 },
+    { id: "aaaaaaaaams1", at: now - 5 * H, kind: "text", nick: "Маша", text: "**Промпт:** Ты — менеджер проекта. Напиши клиенту письмо о переносе срока на неделю: вежливо, 5–7 предложений, с новым планом.", ch: "s-homework", reply: "t1abcdefgh12", sub: 1 },
     { id: "aaaaaaaadm1", at: now - 2 * H, kind: "text", nick: "Дима", text: "Напиши письмо клиенту что срок переносится.", ch: "s-homework", reply: "t1abcdefgh12", sub: 1 },
     { id: "aaaaaaaaln1", at: now - H, kind: "text", nick: "Лена", text: "А можно сдать задание голосовым?", ch: "s-questions" }
   ] };

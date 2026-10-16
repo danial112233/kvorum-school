@@ -33,6 +33,8 @@ const T = "t1abcdefgh12";
     await p.click(".task-foot .btn-s.primary");
     await p.waitForTimeout(300);
     const rv = await p.evaluate(() => ({ open: !document.getElementById("reviewBox").hidden, stat: document.getElementById("rvStat").textContent, rows: [...document.querySelectorAll(".rv")].map((r) => r.querySelector(".rv-head b").textContent + ":" + r.querySelector(".st-chip").textContent) }));
+    const md = await p.evaluate(() => { const r = [...document.querySelectorAll(".rv")].find((x) => /Маша/.test(x.querySelector(".rv-head b").textContent)); const box = r && r.querySelector(".rv-sub"); return box ? { strong: !!box.querySelector(".md strong, .md b"), raw: /\*\*/.test(box.textContent) } : null; });
+    ok("a hand-in reads as markdown in the review", md && md.strong && !md.raw, md);
     ok("review lists students, waiting work first", rv.open && rv.rows[0] === "Дима:сдано, ждёт проверки" && rv.rows[1] === "Маша:проверено · 5" && rv.rows.length === 4, rv);
     // Claude drafts a review; nothing is written until the teacher presses a button
     await p.evaluate(() => { window.__sampleReply = '{"verdict":"rework","grade":"3","feedback":"Нет роли и формата ответа. Добавь, кто пишет письмо и в каком виде нужен ответ."}'; });

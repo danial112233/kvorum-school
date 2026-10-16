@@ -555,6 +555,7 @@ mark.hl { background: var(--accent-soft); color: inherit; border-radius: 3px; bo
 .st-chip.rework, .st-chip.late { color: var(--danger); }
 .rv-sub { max-height: 10em; overflow: auto; padding: 8px 10px; border-radius: var(--r-s); background: var(--surface); font-size: var(--t-sm); white-space: pre-wrap; overflow-wrap: anywhere; }
 .rv-sub small { display: block; margin-bottom: 4px; color: var(--muted); }
+.rv-sub .md { white-space: normal; }
 .rv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .rv-row .field { flex: 1 1 100%; }
 .rv-row .rv-grade { flex: 0 0 8em; }
@@ -5402,7 +5403,9 @@ a.btn { display: inline-flex; align-items: center; justify-content: center; text
     const last = subs[subs.length - 1];
     const box = h("div", "rv-sub");
     box.append(h("small", null, "Сдано " + fmtFull.format(w.s.at) + (t.due && w.s.at > t.due ? " · после срока" : "") + (w.s.n > 1 ? " · попытка " + w.s.n : "")));
-    box.append(last ? handInText(last) || "(пустое сообщение)" : "Сама работа старше двух недель: открой канал и нажми «Показать раньше».");
+    // the work reads as it does in the chat: markdown, links and code, through the page's own sanitizer
+    if (last) { const t = handInText(last); box.append(t ? mdEl(t) : "(пустое сообщение)"); }
+    else box.append("Сама работа старше двух недель: открой канал и нажми «Показать раньше».");
     row.append(box);
     const k = keyOf(n), d = SC.rvDraft.get(t.id + "|" + k) || {};
     const grade = h("input", "field rv-grade");
