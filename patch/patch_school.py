@@ -157,9 +157,10 @@ rep('''      // who sits in which voice channel, for viewers the room cannot rea
         let cfg = null;
         for (const d of snap.docs) if (d.id === "config") { const b = d.data() || {}; cfg = { course: clean(b.course, 80) || "Курс", by: clean(b.by, 24), at: Number(b.at) || 0 }; }
         SC.config = cfg;
+        SC.cfgLoaded = true;
         S.sideKey = "";
         syncSchool(); renderPanel(); render();
-      }, () => {});
+      }, () => { SC.cfgLoaded = true; });
       S.db.collection("tasks").limit(300).onSnapshot((snap) => {
         const m = new Map();
         for (const d of snap.docs) { const t = normTask(d.id, d.data()); if (t) m.set(t.id, t); }
@@ -512,7 +513,7 @@ rep('''  // ---------- voice channels ----------
     syncComposer();
     // a first visit to a course opens on its announcements
     if (schoolOn() && S.channelsLoaded && !SC.started && S.ch === GENERAL && !ls.get("chat.ch") && S.channels.has("s-ann")) { SC.started = true; switchChannel("s-ann"); }
-    if (!schoolOn() && S.peopleLoaded && S.channelsLoaded && S.canWrite && !S.guest && S.nick && !ls.get("chat.schoolHint")) {
+    if (!schoolOn() && SC.cfgLoaded && S.peopleLoaded && S.channelsLoaded && S.canWrite && !S.guest && S.nick && !ls.get("chat.schoolHint")) {
       ls.set("chat.schoolHint", "1");
       notice("Это «Кворум · Курс». Настрой курс: каналы потока, роли и задания появятся за минуту.", true, { label: "Настроить", fn: openCourse });
     }
@@ -824,6 +825,11 @@ rep('''  // ---------- voice channels ----------
 rep('''    ["Что это", "Общий мессенджер внутри Claude для тех, кто входит под одним аккаунтом, и для приглашённых гостей. Сообщения подписываются ником, который каждый выбирает на своём устройстве. Аккаунт общий, поэтому подписаться можно любым ником: чат рассчитан на своих."],''',
     '''    ["Что это", "Кворум · Курс — учебный поток прямо в Claude: каналы потока, задания, сдача и проверка работ, Claude как помощник куратора. Пробная версия, сделана на основе «Кворума». Сообщения подписываются ником, который каждый выбирает на своём устройстве. Под общим аккаунтом подписаться можно любым ником, поэтому роли здесь — договорённость."],
     ["Школьный режим", "Роли: «Преподаватель», «Куратор» и «Ученик». Назначает их преподаватель на вкладке «Команда». Под общим входом роли — договорённость: поменять их может любой. Настоящее разграничение даёт только Claude Team, Enterprise или Claude for Education, где у каждого ученика свой аккаунт.\\nКаналы потока: #объявления (пишут только преподаватели и кураторы), #вопросы, #домашки, #флуд и голосовой «Созвон». Их создаёт «Настройки» → «Курс» → «Настроить курс». Там же — проектные группы по 2–5 человек.\\nЗадания: преподаватель выкладывает их через скрепку → «Задание ученикам»: название, условие, критерии, срок. На карточке видно, сколько сдали.\\nСдать: кнопка «Сдать» на карточке, потом текст, файл, голосовое или кружок. Гость сдаёт текстом или голосовым.\\nПроверка: «Работы» на карточке. У каждой работы «Проверить ИИ» — Claude по критериям готовит черновик оценки и отзыва; преподаватель правит его и нажимает «Принять» или «На доработку». Сам Claude ничего ученику не отправляет.\\nКто видит оценки: ученик — на карточке задания. В базе чата их технически видят все участники.\\nПомощник куратора: @claude отвечает по разделу «Программа курса» на вкладке «Память». Если не знает или вопрос про оценки, сроки и личное, ставит метку «Нужен куратор», и её видят преподаватели."],''')
+
+# what a teacher misses first: templates, reminders, the gradebook, progress
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
+import teacher_tools
+s = teacher_tools.apply(s)
 
 open(out, "w", encoding="utf-8").write(s)
 print("ok school")

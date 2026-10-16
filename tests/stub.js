@@ -41,6 +41,7 @@
   window.__prompts = [];
   var blobs = window.__blobs = new Map(), nAsset = 0;
   var assets = { upload: function(blob, o){ var id = ("a" + (++nAsset) + "00000000000000000000000000000000").slice(0, 32).replace(/[^0-9a-f]/g, "0"); blobs.set(id, blob); window.__uploads = (window.__uploads || []).concat([{ id: id, type: (o && o.type) || blob.type, size: blob.size }]); if (window.__failUpload) return Promise.reject({code:"rate_limited"}); return Promise.resolve({ id: id, url: "/_blob/" + id, sizeBytes: blob.size, contentType: (o && o.type) || blob.type }); } };
+  var downloads = { save: function(o){ window.__saved = o; return Promise.resolve("saved"); } };
   var sample = function(input, opts){ window.__prompts.push(String(input)); var t = window.__sampleReply || "Готово."; return new Promise(function(res, rej){ var half = setTimeout(function(){ opts && opts.onText && opts.onText({text: t.slice(0, Math.ceil(t.length/2))}); }, 100); var done = setTimeout(function(){ opts && opts.onText && opts.onText({text: t}); res({text: t, truncated: false}); }, 300); if (opts && opts.signal) opts.signal.addEventListener("abort", function(){ clearTimeout(half); clearTimeout(done); rej({code:"cancelled", text: ""}); }); }); };
-  window.claude = { use: function(n){ if(n==="db") return db; if(n==="room") return room; if (n==="user") return user; if (n==="sample") return sample; if (n==="assets") return assets; return null; } };
+  window.claude = { use: function(n){ if(n==="db") return db; if(n==="room") return room; if (n==="user") return user; if (n==="sample") return sample; if (n==="assets") return assets; if (n==="downloads") return downloads; return null; } };
 })();

@@ -26,6 +26,12 @@ Trial version. The interface is in Russian.
 
   The teacher sets a grade and a comment, and the student sees the result on the card.
 - **AI first review:** the teacher's own Claude drafts a grade and feedback against the criteria. Nothing reaches the student until the teacher presses a button.
+- **Teacher tools:**
+  - assignment templates;
+  - a deadline reminder in #объявления (no names), offered a day before the deadline;
+  - a "not handed in" filter with a nudge that @mentions each of them;
+  - a course gradebook (students × assignments) with a CSV download;
+  - each student's progress, for the student and for the teachers.
 - **Curator assistant:** @claude answers from the course programme. When it doesn't know, or the question is about grades, deadlines or personal matters, it marks the answer "needs a curator".
 - **From Claude Code:** the `kvorum-course` skill can:
   - post an assignment;
@@ -73,11 +79,11 @@ Course data lives in the artifact's database:
 
 The work itself is an ordinary message that replies to the assignment with a `sub` mark. Field formats are in `skill/kvorum-course/reference.md`.
 
-Tests (44 WebKit checks):
+Tests (65 WebKit checks):
 
 ```
 cd tests && npm i playwright && npx playwright install webkit
-python3 build.py && node school-test.js
+python3 build.py && node school-test.js && node teacher-test.js
 ```
 
 ## Credits and license
