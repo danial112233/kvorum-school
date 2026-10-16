@@ -2,7 +2,7 @@
 
 **A course cohort right inside Claude.** Cohort channels, assignments with hand-ins and reviews, and Claude as the curator's assistant, all in one artifact that opens in Claude on desktop and mobile.
 
-It is the school edition of [Nash Chat](https://github.com/danial112233/claude-nash-chat), a messenger artifact for people who work in Claude together. It is built for online schools that teach Claude and AI: students talk, hand in homework and ask questions in the same place where they learn.
+It is the school edition of [Kvorum](https://github.com/danial112233/kvorum), a messenger artifact for people who work in Claude together. It is built for online schools that teach Claude and AI: students talk, hand in homework and ask questions in the same place where they learn.
 
 Trial version. The interface is in Russian.
 
@@ -55,10 +55,10 @@ Full role separation needs Claude Team, Enterprise or Claude for Education, wher
 
 ## How it's built
 
-The page is built from the Nash Chat page (v28) by one patch:
+The page is built from the Kvorum page (v28 or later) by one patch:
 
 ```
-python3 patch/patch_school.py <claude-nash-chat/page/nash-chat.html> page/nash-school.html
+python3 patch/patch_school.py <kvorum/page/nash-chat.html> page/nash-school.html
 ```
 
 Course data lives in the artifact's database:
@@ -82,4 +82,4 @@ python3 build.py && node school-test.js
 
 ## Credits and license
 
-Built on [claude-nash-chat](https://github.com/danial112233/claude-nash-chat). MIT license, see `LICENSE`. Help setting it up for a school is available via Issues.
+Built on [Kvorum](https://github.com/danial112233/kvorum). MIT license, see `LICENSE`. Help setting it up for a school is available via Issues.
